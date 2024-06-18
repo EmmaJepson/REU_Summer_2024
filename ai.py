@@ -26,6 +26,8 @@ increment = 0
 pred = model.predict(input_data)
 pred_classes = np.argmax(pred, axis = 1)
 class_labels = dataframe['class id'].unique()
+
+#ignore this
 '''for file_path in dataframe['image_path']:
     if firstcsvline:
         firstcsvline = False
