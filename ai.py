@@ -5,10 +5,14 @@ from PIL import Image
 from keras.utils.image_utils import img_to_array
 from keras.applications.efficientnet import preprocess_input
 
-model = keras.models.load_model("D:\\Repos\\REU_Summer_2024\\EfficientNetB0-525-(224 X 224)- 98.97.h5", custom_objects={'F1_score':'F1_score'})
+# model path on laptop C:\\Users\\acosc\\REU_Summer_2024\\EfficientNetB0-525-(224 X 224)- 98.97.h5
+# model path on desktop D:\\Repos\\REU_Summer_2024\\EfficientNetB0-525-(224 X 224)- 98.97.h5
+model = keras.models.load_model("C:\\Users\\acosc\\REU_Summer_2024\\EfficientNetB0-525-(224 X 224)- 98.97.h5", custom_objects={'F1_score':'F1_score'})
 
+# csv path on laptop C:\\Users\\acosc\\REU_Summer_2024\\birds.csv
+# csv path on desktop D:\\Repos\\REU_Summer_2024\\birds.csv
 firstcsvline = True
-dataframe = pd.read_csv('D:\\Repos\\REU_Summer_2024\\birds.csv', header = None, names = ['class id', 'image_path', 'labels', 'data set', 'scientific name'])
+dataframe = pd.read_csv('C:\\Users\\acosc\\REU_Summer_2024\\birds.csv', header = None, names = ['class id', 'image_path', 'labels', 'data set', 'scientific name'])
 images = []
 for file_path in dataframe['image_path']:
     if firstcsvline:
@@ -27,7 +31,7 @@ pred = model.predict(input_data)
 pred_classes = np.argmax(pred, axis = 1)
 class_labels = dataframe['class id'].unique()
 
-#ignore this
+# ignore this
 '''for file_path in dataframe['image_path']:
     if firstcsvline:
         firstcsvline = False
