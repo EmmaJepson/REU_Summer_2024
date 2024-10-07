@@ -16,7 +16,7 @@ data_adapter._is_distributed_dataset = _is_distributed_dataset
 batch_size = 40
 img_height = 244
 img_width = 244
-epochs = 10
+epochs = 15
 
 # path on laptop C:\\Users\\acosc\\REU_Summer_2024
 # path on desktop D:\\Repos\\REU_Summer_2024
@@ -74,4 +74,4 @@ history = model.fit(
     validation_steps = int(0.25 * len(validation_generator))
 )
 
-model.save('trained_model_6.h5')
+model.save('trained_modelV2_1.h5')
