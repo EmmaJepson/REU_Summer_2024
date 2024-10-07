@@ -45,28 +45,25 @@ validation_generator = train_datagen.flow_from_directory(
     class_mode='categorical',
 )
 
-# model definition
-model = keras.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(img_height, img_width, 3)),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(128, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(128, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Flatten(),
-    layers.Dense(512, activation='relu'),
-    layers.Dense(len(train_generator.class_indices), activation='softmax')  # Output layer
-])
-print(len(train_generator))
-print(len(validation_generator))
+base_model = tensorflow.keras.applications.ResNet101V2(include_top = False,)
+
+base_model.trainable = False
+
+inputs = tensorflow.keras.layers.Input(shape = (300, 300, 3), name = "input_layer")
+
+x = base_model(inputs)
+
+x = tensorflow.keras.layers.GlobalAveragePooling2D(name = "global_avg_pool_layer")(x)
+
+outputs = tensorflow.keras.layers.Dense(525, activation = "softmax", name = "output_layer")(x)
+
+inception_model = tensorflow.keras.Model(inputs, outputs)
 
 # compile
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+inception_model.compile(optimizer=tensorflow.optimizers.Adam(learning_rate = 0.01), loss='categorical_crossentropy', metrics=['accuracy'])
 
 # train
-history = model.fit(
+history = inception_model.fit(
     train_generator,
     epochs = epochs,
     validation_data = validation_generator,
@@ -74,4 +71,4 @@ history = model.fit(
     validation_steps = int(0.25 * len(validation_generator))
 )
 
-model.save('trained_model_6.h5')
+inception_model.save('resnet101v2_model.h5')
